@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매출 결과</title>
+</head>
+<body>
+    <h1>매출 데이터 조회</h1>
+    <form method="POST" action="{{ url_for('results') }}">
+        <label for="year">년도:</label>
+        <input type="number" id="year" name="year" value="{{ current_month.split('-')[0] }}" required>
+        <label for="month">월:</label>
+        <input type="number" id="month" name="month" value="{{ current_month.split('-')[1] }}" required min="1" max="12">
+        <input type="submit" value="조회">
+    </form>
+
+    <h2>매출 데이터</h2>
+    {% for date, sales in revenue_data.items() %}
+        <h3>{{ date }}</h3>
+        {% for sale in sales %}
+            <p>결제수단: {{ sale.payment_method }}, 금액: {{ sale.amount }}</p>
+        {% endfor %}
+    {% endfor %}
+
+    <h3>조회 결과</h3>
+    <p>{{ current_month }} 월 매출액: {{ current_sales }}원</p>
+    {% if last_year_sales is not none %}
+        <p>{{ last_year_month }} 월 매출액: {{ last_year_sales }}원</p>
+    {% endif %}
+    <p>매출액 증가율: {{ revenue_increase }}%</p>
+    <p>예약 횟수 증가율: {{ booking_increase }}%</p>
+</body>
+</html>
